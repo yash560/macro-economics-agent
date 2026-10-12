@@ -92,8 +92,8 @@ class MacroFeatureEngine:
                 (latest_cpi_surprise * cpi_decay) + (latest_nfp_surprise * nfp_decay * 0.5), 4
             )
 
-            # Raw news sentiment score
-            raw_sentiment = daily_sentiment.get(d_str, 0.25)
+            # Raw news sentiment score (default neutral is 0.0)
+            raw_sentiment = daily_sentiment.get(d_str, 0.0)
 
             feature_rows.append({
                 "date": d_str,
@@ -146,8 +146,8 @@ class MacroFeatureEngine:
         feat_df["target_spy_fwd_5d"] = (1.0 + spy_ret.shift(-5)).rolling(5).apply(np.prod, raw=True) - 1.0
         feat_df["target_trade_win"] = (feat_df["target_spy_fwd_1d"] > 0).astype(int)
 
-        # Fill leading NaNs from rolling metrics with backward fill or zero
-        feat_df = feat_df.bfill().fillna(0.0)
+        # Zero out leading uninitialized periods without using future data (strictly avoiding lookahead)
+        feat_df = feat_df.fillna(0.0)
 
         # Save processed features
         PROCESSED_DATA_DIR.mkdir(parents=True, exist_ok=True)

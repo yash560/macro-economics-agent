@@ -98,9 +98,9 @@ class MacroStrategyEngine:
         # Sharpe Ratio
         sharpe = round(mean_excess / annual_vol, 3) if annual_vol > 0 else 0.0
 
-        # Sortino Ratio (Downside deviation only)
-        downside_returns = returns[returns < 0]
-        downside_vol = downside_returns.std() * np.sqrt(252.0) if len(downside_returns) > 0 else 1e-4
+        # Sortino Ratio (Target downside deviation relative to risk-free rate)
+        downside_diff = np.minimum(0.0, excess_returns)
+        downside_vol = np.sqrt(np.mean(downside_diff ** 2)) * np.sqrt(252.0)
         sortino = round(mean_excess / downside_vol, 3) if downside_vol > 0 else 0.0
 
         # Cumulative Wealth & Maximum Drawdown

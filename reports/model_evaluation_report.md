@@ -18,14 +18,14 @@ All backtests incorporate realistic institutional trading frictions, specificall
 
 | Strategy Permutation | Sharpe Ratio | Sortino Ratio | Max Drawdown (%) | Win Rate (%) | Profit Factor | Total Return (%) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Pre-Event Volatility Breakout (`strat_vol_breakout`)** | **1.41** | **2.19** | **3.63%** | **50.00%** | **1.38** | **+8.51%** |
-| **ML-Guided Dynamic Macro (`strat_ml_dynamic_macro`)** | **0.81** | **0.97** | **5.91%** | **50.00%** | **1.18** | **+6.55%** |
-| **Fed Policy Drift (`strat_fed_drift`)** | **0.55** | **0.92** | **3.63%** | **50.81%** | **1.14** | **+4.49%** |
-| **CPI Surprise Momentum (`strat_cpi_momentum`)** | **0.34** | **0.54** | **5.01%** | **48.39%** | **1.09** | **+3.91%** |
-| **Benchmark: S&P 500 Buy & Hold (`SPY`)** | **1.58** | **2.53** | **4.49%** | **50.81%** | **1.42** | **+11.80%** |
-| **Cross-Asset Regime Parity (`strat_regime_parity`)** | -1.59 | -2.33 | 5.46% | 50.81% | 0.81 | -2.91% |
+| **ML-Guided Dynamic Macro (`strat_ml_dynamic_macro`)** | **2.55** | **5.30** | **1.76%** | **44.12%** | **1.73** | **+3.87%** |
+| **Pre-Event Volatility Breakout (`strat_vol_breakout`)** | **1.39** | **2.47** | **1.49%** | **44.12%** | **1.48** | **+1.91%** |
+| **Benchmark: S&P 500 Buy & Hold (`SPY`)** | **1.06** | **1.86** | **2.47%** | **44.12%** | **1.34** | **+1.93%** |
+| **CPI Surprise Momentum (`strat_cpi_momentum`)** | **1.06** | **1.86** | **2.47%** | **44.12%** | **1.34** | **+1.93%** |
+| **Fed Policy Drift (`strat_fed_drift`)** | -1.00 | -1.53 | 2.42% | 44.12% | 0.77 | -0.44% |
+| **Cross-Asset Regime Parity (`strat_regime_parity`)** | -4.23 | -5.08 | 4.74% | 38.24% | 0.45 | -2.92% |
 
-*All metrics calculated out-of-sample using daily compounding after transaction costs.*
+*All metrics calculated strictly out-of-sample over forward folds (excluding burn-in) using daily compounding after transaction costs.*
 
 ---
 

@@ -104,9 +104,9 @@ class WalkForwardValidator:
             total_folds += 1
             start_idx = end_test_idx
 
-        # Backfill initial burn-in period with median neutral signals
-        oos_predictions = oos_predictions.bfill().fillna(0.5)
-        logger.info(f"Completed {total_folds} Walk-Forward Out-of-Sample folds.")
+        # Neutral zero exposure during burn-in (strictly avoiding lookahead backfill)
+        oos_predictions.iloc[:self.train_window] = 0.0
+        logger.info(f"Completed {total_folds} Walk-Forward Out-of-Sample folds ({n_samples - self.train_window} pure OOS days).")
 
         # Compute average feature importance
         mean_importance = np.mean(feature_importances, axis=0) if len(feature_importances) > 0 else np.zeros(len(avail_features))
@@ -119,10 +119,11 @@ class WalkForwardValidator:
         strategy_engine = MacroStrategyEngine()
         strategy_pnl_df = strategy_engine.backtest_strategies(df_features, oos_predictions)
 
-        # Compute Performance Metrics across all strategies
+        # Compute Performance Metrics strictly across the pure Out-of-Sample evaluation window
+        oos_pnl_df = strategy_pnl_df.iloc[self.train_window:]
         metrics_summary = {}
-        for col in strategy_pnl_df.columns:
-            m = strategy_engine.calculate_metrics(strategy_pnl_df[col])
+        for col in oos_pnl_df.columns:
+            m = strategy_engine.calculate_metrics(oos_pnl_df[col])
             metrics_summary[col] = m
 
         return oos_predictions, strategy_pnl_df, metrics_summary, importance_df
